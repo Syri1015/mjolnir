@@ -1,4 +1,4 @@
-# 🔨 Mjolnir: Toolkit for the AYN Thor
+# 🔨 Mjolnir
 
 Mjolnir is a utility application designed specifically for the **AYN Thor** dual-screen Android gaming handheld - but should work with all Android devices running Android 7.0 or later.
 

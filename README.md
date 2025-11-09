@@ -1,4 +1,6 @@
-# 🔨 Mjolnir
+<img width="512" height="512" alt="mjolnir_icon" src="https://github.com/blacksheepmvp/mjolnir/blob/main/app/src/main/res/drawable/ic_launcher_foreground.png" />
+
+## 🔨 Mjolnir
 
 Mjolnir is a utility application designed specifically for the **AYN Thor** dual-screen Android gaming handheld - but should work with all Android devices running Android 7.0 or later.
 

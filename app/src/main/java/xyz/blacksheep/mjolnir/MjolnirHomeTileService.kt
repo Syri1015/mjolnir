@@ -11,7 +11,6 @@ import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import android.view.accessibility.AccessibilityManager
 import androidx.core.content.edit
-import xyz.blacksheep.mjolnir.*
 
 class MjolnirHomeTileService : TileService(), SharedPreferences.OnSharedPreferenceChangeListener {
 

@@ -33,7 +33,6 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -418,8 +417,15 @@ private fun MainSettingsScreen(navController: NavController, onClose: () -> Unit
             }
             item {
                 SettingsItem(
+                    icon = Icons.Default.Home,
+                    title = "Mjolnir Home Settings",
+                    subtitle = "Customize your DS-home environment"
+                ) { navController.navigate("home_launcher") }
+            }
+            item {
+                SettingsItem(
                     icon = Icons.Default.Build,
-                    title = "Steam File Generator",
+                    title = "Steam File Settings",
                     subtitle = "Manage file creation and directory settings"
                 ) { navController.navigate("tool_settings") }
             }
@@ -436,20 +442,14 @@ private fun MainSettingsScreen(navController: NavController, onClose: () -> Unit
                     subtitle = "Adjust themes and colors"
                 ) { navController.navigate("appearance") }
             }
-            item {
-                SettingsItem(
-                    icon = Icons.Default.Home,
-                    title = "Home Launcher",
-                    subtitle = "Configure dual-screen app launching"
-                ) { navController.navigate("home_launcher") }
-            }
-            item {
+
+            /*item {
                 SettingsItem(
                     icon = Icons.Default.Settings,
                     title = "Developer Mode",
                     subtitle = "Access advanced developer options"
                 ) { navController.navigate("developer_mode") }
-            }
+            }*/
             item {
                 SettingsItem(
                     icon = Icons.Default.Info,

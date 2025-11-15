@@ -10,6 +10,7 @@ import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -29,6 +30,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
@@ -54,7 +57,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -93,59 +95,6 @@ import xyz.blacksheep.mjolnir.utils.SteamTool
 
 private const val ACTION_CCT_URL_RETURN = "xyz.blacksheep.mjolnir.ACTION_CCT_URL_RETURN"
 
-//enum class AppTheme { LIGHT, DARK, SYSTEM }
-//enum class MainScreen { TOP, BOTTOM }
-
-/*
-val GameInfoSaver = Saver<GameInfo, List<String>>(
-    save = { listOf(it.appId, it.name, it.headerImage) },
-    restore = { GameInfo(it[0], it[1], it[2]) }
-)
-
-val UiStateSaver = Saver<UiState, Any>(
-    save = {
-        when (it) {
-            is UiState.Idle -> "Idle"
-            is UiState.Loading -> listOf("Loading", it.appId)
-            is UiState.Success -> with(GameInfoSaver) { save(it.gameInfo)?.let { list -> listOf("Success") + list } ?: error("Could not save GameInfo") }
-            is UiState.Failure -> listOf("Failure", it.error)
-        }
-    },
-    restore = {
-        when (val value = it as? List<*>) {
-            null -> UiState.Idle
-            else -> when (value[0]) {
-                "Loading" -> UiState.Loading(value[1] as String)
-                "Success" -> {
-                    @Suppress("UNCHECKED_CAST")
-                    GameInfoSaver.restore(value.drop(1) as? List<String> ?: emptyList())?.let { gameInfo ->
-                        UiState.Success(gameInfo)
-                    } ?: UiState.Idle
-                }
-                "Failure" -> UiState.Failure(value[1] as String)
-                else -> UiState.Idle
-            }
-        }
-    }
-)
-
-val OverwriteInfoSaver = Saver<OverwriteInfo?, Any>(
-    save = { it?.let { with(GameInfoSaver) { save(it.gameInfo)?.let { list -> listOf(it.oldAppId) + list } } } },
-    restore = {
-        (it as? List<*>)?.let { value ->
-            val oldAppId = value[0] as String
-            @Suppress("UNCHECKED_CAST")
-            val gameInfo = GameInfoSaver.restore(value.drop(1) as? List<String> ?: emptyList())
-            if (gameInfo != null) {
-                OverwriteInfo(gameInfo, oldAppId)
-            } else {
-                null
-            }
-        }
-    }
-)
-*/
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 class SteamFileGenActivity : ComponentActivity() {
     private val intentState = mutableStateOf<Intent?>(null)
@@ -154,18 +103,11 @@ class SteamFileGenActivity : ComponentActivity() {
     companion object {
         const val EXTRA_FORCE_SETUP = "xyz.blacksheep.mjolnir.FORCE_SETUP"
 
-        /**
-         * Checks if the ROMs directory has been set in SharedPreferences.
-         * @return True if the directory is set, false otherwise.
-         */
         fun isRomDirectorySet(context: Context): Boolean {
             val prefs = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
             return !prefs.getString(KEY_ROM_DIR_URI, null).isNullOrBlank()
         }
 
-        /**
-         * Creates an Intent to launch SteamFileGenActivity and force the setup screen.
-         */
         fun createSetupIntent(context: Context): Intent {
             return Intent(context, SteamFileGenActivity::class.java).apply {
                 putExtra(EXTRA_FORCE_SETUP, true)
@@ -178,23 +120,17 @@ class SteamFileGenActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         isNewTask = isTaskRoot
 
-        // If the activity is launched as a new task to handle a share intent, handle it headlessly
         if (intent?.action == Intent.ACTION_SEND && isNewTask) {
             CoroutineScope(Dispatchers.Main).launch {
                 val result = handleShareIntentHeadless(intent)
                 Toast.makeText(this@SteamFileGenActivity, result, Toast.LENGTH_SHORT).show()
                 finish()
             }
-            return // Skip UI setup
+            return
         }
 
-        //window.setFlags(
-        //    WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
-        //    WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM
-        //)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        // Check for the CCT custom button callback and transform the intent
         var intentToProcess = intent
         if (intent?.action == ACTION_CCT_URL_RETURN) {
             Log.e("MjolnirCCT_DEBUG", "CALLBACK RECEIVED! Full Intent Dump:")
@@ -249,7 +185,7 @@ class SteamFileGenActivity : ComponentActivity() {
                             )
                             prefs.edit { putString(KEY_ROM_DIR_URI, uri.toString()) }
                             romsDirectoryUri = uri
-                            showSetup = false // Close setup after selection
+                            showSetup = false
                         }
                     }
                 )
@@ -272,10 +208,16 @@ class SteamFileGenActivity : ComponentActivity() {
                         },
                         intent = intentState.value,
                         onIntentConsumed = { intentState.value = null },
-                        onFinish = { finish() }
+                        onFinish = {
+                            if (isNewTask) {
+                                val intent = Intent(this@SteamFileGenActivity, MainActivity::class.java)
+                                startActivity(intent)
+                            }
+                            finish()
+                        }
                     )
                 } else {
-                    finish() // If setup is skipped and no directory, close activity
+                    finish()
                 }
             }
         }
@@ -311,7 +253,6 @@ class SteamFileGenActivity : ComponentActivity() {
                     "${gameInfo.name}.steam already exists"
                 }
                 else -> {
-                    // Overwrite case - for headless we'll just report the conflict
                     "Conflict: ${gameInfo.name}.steam exists with a different AppID"
                 }
             }
@@ -324,7 +265,6 @@ class SteamFileGenActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         var intentToProcess = intent
-        // Check for the CCT custom button callback and transform the intent
         if (intent?.action == ACTION_CCT_URL_RETURN) {
             Toast.makeText(this, "CCT", Toast.LENGTH_SHORT).show()
             Log.e("MjolnirCCT_DEBUG", "CALLBACK RECEIVED! Full Intent Dump:")
@@ -365,6 +305,8 @@ class SteamFileGenActivity : ComponentActivity() {
         val scope = rememberCoroutineScope()
         val context = LocalContext.current
 
+        BackHandler { onFinish() }
+
         var selectedFile by rememberSaveable { mutableStateOf<Pair<String, String>?>(null) }
         var overwriteInfo by rememberSaveable(stateSaver = OverwriteInfoSaver) { mutableStateOf(null) }
         var showDeleteConfirmDialog by rememberSaveable { mutableStateOf<String?>(null) }
@@ -385,15 +327,6 @@ class SteamFileGenActivity : ComponentActivity() {
         var showAboutDialog by rememberSaveable { mutableStateOf(false) }
         var steamFiles by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
         var fileCreationResult by rememberSaveable { mutableStateOf<String?>(null) }
-
-        val versionName = remember {
-            try {
-                val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-                packageInfo.versionName ?: "N/A"
-            } catch (e: Exception) {
-                e.toString()
-            }
-        }
 
         suspend fun refreshFileList(uri: Uri) {
             try {
@@ -740,7 +673,6 @@ fun MassDeleteConfirmationDialog(quantity: Int, onDismiss: () -> Unit, onConfirm
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FileListUi(
     steamFiles: List<String>,
@@ -748,38 +680,26 @@ private fun FileListUi(
     onFileLongClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     inMultiSelectMode: Boolean,
-    selectedFiles: Set<String>
+    selectedFiles: Set<String>,
+    isScrollable: Boolean
 ) {
-    Column(modifier = modifier) {
-        if (steamFiles.isEmpty()) {
-            Text("No .steam files found.")
-        } else {
-            LazyColumn {
-                items(steamFiles) { fileName ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .combinedClickable(
-                                onClick = { onFileClick(fileName) },
-                                onLongClick = { onFileLongClick(fileName) }
-                            )
-                            .padding(horizontal = 8.dp, vertical = 4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        if (inMultiSelectMode) {
-                            Checkbox(
-                                checked = selectedFiles.contains(fileName),
-                                onCheckedChange = { onFileClick(fileName) }, // Click toggles selection in this mode
-                                modifier = Modifier.padding(end = 16.dp)
-                            )
-                        }
-                        Text(fileName)
-                    }
-                }
+    if (steamFiles.isEmpty()) {
+        Text("No .steam files found.", modifier = modifier)
+    } else if (isScrollable) {
+        LazyColumn(modifier = modifier) {
+            items(steamFiles) { fileName ->
+                FileListItem(fileName, inMultiSelectMode, selectedFiles, onFileClick, onFileLongClick)
+            }
+        }
+    } else {
+        Column(modifier = modifier) {
+            steamFiles.forEach { fileName ->
+                FileListItem(fileName, inMultiSelectMode, selectedFiles, onFileClick, onFileLongClick)
             }
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -797,6 +717,36 @@ fun MultiSelectTopBar(selectedCount: Int, onCancel: () -> Unit, onDelete: () -> 
             }
         }
     )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun FileListItem(
+    fileName: String,
+    inMultiSelectMode: Boolean,
+    selectedFiles: Set<String>,
+    onFileClick: (String) -> Unit,
+    onFileLongClick: (String) -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .combinedClickable(
+                onClick = { onFileClick(fileName) },
+                onLongClick = { onFileLongClick(fileName) }
+            )
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        if (inMultiSelectMode) {
+            Checkbox(
+                checked = selectedFiles.contains(fileName),
+                onCheckedChange = { onFileClick(fileName) },
+                modifier = Modifier.padding(end = 16.dp)
+            )
+        }
+        Text(fileName)
+    }
 }
 
 
@@ -841,30 +791,38 @@ fun MainScreen(
             ) {
                 FileListUi(
                     steamFiles = steamFiles, onFileClick = onFileClick, modifier = Modifier.fillMaxSize(),
+                    isScrollable = true,
                     inMultiSelectMode = inMultiSelectMode, selectedFiles = selectedFiles, onFileLongClick = onFileLongClick
                 )
             }
         }
     } else {
         Column(modifier = modifier.padding(16.dp)) {
-            SearchUi(
-                uiState = uiState,
-                fileCreationResult = fileCreationResult,
-                onCreateFile = onCreateFile,
-                modifier = Modifier.height(180.dp) // Give a bit more space for the image
-            )
-            ManualInputUi(onSearch = onSearch)
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                SearchUi(
+                    uiState = uiState,
+                    fileCreationResult = fileCreationResult,
+                    onCreateFile = onCreateFile,
+                    modifier = Modifier.height(180.dp)
+                )
+                ManualInputUi(onSearch = onSearch)
 
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
 
-            FileListUi(
-                steamFiles = steamFiles,
-                onFileClick = onFileClick,
-                modifier = Modifier.weight(1f),
-                inMultiSelectMode = inMultiSelectMode,
-                selectedFiles = selectedFiles,
-                onFileLongClick = onFileLongClick
-            )
+                FileListUi(
+                    steamFiles = steamFiles,
+                    onFileClick = onFileClick,
+                    modifier = Modifier.fillMaxWidth(),
+                    isScrollable = false,
+                    inMultiSelectMode = inMultiSelectMode,
+                    selectedFiles = selectedFiles,
+                    onFileLongClick = onFileLongClick
+                )
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -875,32 +833,6 @@ fun MainScreen(
                 Text("Browse SteamDB.info")
             }
         }
-    }
-}
-
-@Preview(showBackground = true, widthDp = 360, heightDp = 720)
-@Composable
-fun MainScreenPreviewPortrait() {
-    MjolnirTheme {
-        MainScreen(
-            uiState = UiState.Success(GameInfo("123", "Test Game Name That is Quite Long", "")), onSearch = {},
-            steamFiles = listOf("A.steam", "B.steam"), fileCreationResult = "Success",
-            onCreateFile = {}, onFileClick = {},
-            inMultiSelectMode = false, selectedFiles = emptySet(), onFileLongClick = {}, onOpenSteamDb = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, widthDp = 720, heightDp = 360)
-@Composable
-fun MainScreenPreviewLandscape() {
-    MjolnirTheme {
-        MainScreen(
-            uiState = UiState.Success(GameInfo("123", "Test Game Name That is Quite Long", "")), onSearch = {},
-            steamFiles = listOf("A.steam", "B.steam", "C.steam", "D.steam", "E.steam"), fileCreationResult = "Success",
-            onCreateFile = {}, onFileClick = {},
-            inMultiSelectMode = false, selectedFiles = emptySet(), onFileLongClick = {}, onOpenSteamDb = {}
-        )
     }
 }
 

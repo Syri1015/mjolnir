@@ -68,3 +68,4 @@ This project requires **Android Studio** and the necessary SDKs for building. Cl
 ## 🤝 Contributing
 
 If you have suggestions, bug reports, or feature requests, please open an issue or leave a comment on the release video. Thanks for checking out Mjolnir!
+If you want to send me a tip/donation, I've set up a [Ko-fi](https://ko-fi.com/xyzblacksheep)

